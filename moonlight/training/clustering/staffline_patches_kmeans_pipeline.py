@@ -168,7 +168,7 @@ def main(_):
           patch_file_prefix, beam.coders.ProtoCoder(tf.train.Example))
       tf.logging.info('Running the pipeline...')
     tf.logging.info('Running k-means...')
-    patch_files = file_io.get_matching_files(patch_file_prefix + '*')
+    patch_files = file_io.get_matching_files(f'{patch_file_prefix}*')
     clusters = train_kmeans(patch_files, FLAGS.kmeans_num_clusters,
                             FLAGS.kmeans_batch_size, FLAGS.kmeans_num_steps)
     tf.logging.info('Writing the centroids...')

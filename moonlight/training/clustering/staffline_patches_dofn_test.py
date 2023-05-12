@@ -66,7 +66,7 @@ class StafflinePatchesDoFnTest(absltest.TestCase):
         patch_pixels = tuple(
             example.features.feature['features'].float_list.value)
         if patch_pixels not in expected_patches:
-          self.fail('Missing patch {}'.format(patch_pixels))
+          self.fail(f'Missing patch {patch_pixels}')
 
 
 if __name__ == '__main__':

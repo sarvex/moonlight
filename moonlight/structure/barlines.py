@@ -43,8 +43,7 @@ class Barlines(object):
   def apply(self, page):
     """Splits the staves in the page into systems with barlines."""
     assert len(page.system) == 1
-    systems_map = dict(
-        (i, (i, i)) for i in moves.xrange(len(page.system[0].staff)))
+    systems_map = {i: (i, i) for i in moves.xrange(len(page.system[0].staff))}
     for start, end in zip(self.barline_staff_start, self.barline_staff_end):
       for staff in moves.xrange(start, end + 1):
         start = min(start, systems_map[staff][0])

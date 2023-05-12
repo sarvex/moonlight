@@ -84,14 +84,14 @@ class SavedConvolutional1DClassifier(
         break
     else:
       # for/else is only executed if the loop completes without breaking.
-      raise ValueError('One of the following signatures must be present: %s' %
-                       _SIGNATURE_KEYS)
+      raise ValueError(
+          f'One of the following signatures must be present: {_SIGNATURE_KEYS}')
 
     input_info = signature.inputs['input']
-    if not (len(input_info.tensor_shape.dim) == 3 and
-            input_info.tensor_shape.dim[1].size > 0 and
-            input_info.tensor_shape.dim[2].size > 0):
-      raise ValueError('Invalid patches input: ' + str(input_info))
+    if (len(input_info.tensor_shape.dim) != 3
+        or input_info.tensor_shape.dim[1].size <= 0
+        or input_info.tensor_shape.dim[2].size <= 0):
+      raise ValueError(f'Invalid patches input: {str(input_info)}')
     patch_height = input_info.tensor_shape.dim[1].size
     patch_width = input_info.tensor_shape.dim[2].size
 
@@ -156,7 +156,7 @@ class SavedConvolutional1DClassifier(
         # Implicit comparison is invalid on a NumPy array.
         # pylint: disable=g-explicit-bool-comparison
         if run_min_length is None or run_min_length.shape != ():
-          raise ValueError('Bad run_min_length: {}'.format(run_min_length))
+          raise ValueError(f'Bad run_min_length: {run_min_length}')
         # Overwrite the property after the Convolutional1DGlyphClassifier
         # constructor completes.
         self.run_min_length = int(run_min_length)

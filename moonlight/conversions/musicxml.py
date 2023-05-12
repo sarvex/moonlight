@@ -134,10 +134,9 @@ def _get_attributes(measure, position=-1):
   """
   if len(measure) and measure[position].tag == 'attributes':
     return measure[position]
-  else:
-    attributes = etree.Element('attributes')
-    measure.insert(position, attributes)
-    return attributes
+  attributes = etree.Element('attributes')
+  measure.insert(position, attributes)
+  return attributes
 
 
 def _glyph_to_clef(glyph):
@@ -184,15 +183,15 @@ def _glyph_to_note(glyph):
   etree.SubElement(note, 'type').text = note_type
   duration = DIVISIONS * (glyph.note.end_time - glyph.note.start_time)
   if not duration.is_integer():
-    raise ValueError('Duration is not an integer: ' + str(duration))
+    raise ValueError(f'Duration is not an integer: {str(duration)}')
   etree.SubElement(note, 'duration').text = str(int(duration))
   pitch_match = re.match('([A-G])([#b]?)([0-9]+)',
                          librosa.midi_to_note(glyph.note.pitch))
   pitch = etree.SubElement(note, 'pitch')
-  etree.SubElement(pitch, 'step').text = pitch_match.group(1)
-  etree.SubElement(pitch, 'alter').text = str(
-      ACCIDENTAL_TO_ALTER[pitch_match.group(2)])
-  etree.SubElement(pitch, 'octave').text = pitch_match.group(3)
+  etree.SubElement(pitch, 'step').text = pitch_match[1]
+  etree.SubElement(pitch,
+                   'alter').text = str(ACCIDENTAL_TO_ALTER[pitch_match[2]])
+  etree.SubElement(pitch, 'octave').text = pitch_match[3]
   return note
 
 

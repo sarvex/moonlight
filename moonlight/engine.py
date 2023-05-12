@@ -170,14 +170,11 @@ class OMREngine(object):
     # The Page without staff location information.
     labels_page = self.glyph_classifier.glyph_predictions_to_page(glyphs)
 
-    # Process the Page using the computed structure.
-    if process_structure:
-      processed_page = page_processors.process(
-          labels_page, computed_structure,
-          self.glyph_classifier.staffline_extractor)
-    else:
-      processed_page = labels_page
-    return processed_page
+    return (page_processors.process(
+        labels_page,
+        computed_structure,
+        self.glyph_classifier.staffline_extractor,
+    ) if process_structure else labels_page)
 
 
 def _nested_ndarrays_to_tensors(data):
@@ -203,4 +200,4 @@ def _nested_ndarrays_to_tensors(data):
   elif isinstance(data, tf.Tensor):
     return data
   else:
-    raise ValueError('Unexpected data: %s' % data)
+    raise ValueError(f'Unexpected data: {data}')

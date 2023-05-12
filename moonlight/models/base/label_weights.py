@@ -68,7 +68,7 @@ def parse_label_weights_array(weights_str=None):
   for pair in weights_str.split(','):
     name, glyph_weight_str = pair.split('=')
     if name in weights:
-      raise ValueError('Duplicate weight: {}'.format(name))
+      raise ValueError(f'Duplicate weight: {name}')
     weights[name] = float(glyph_weight_str)
 
   for name, weight in six.iteritems(weights):

@@ -13,6 +13,7 @@
 # limitations under the License.
 """Reads Pages of glyphs and outputs a NoteSequence."""
 
+
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -30,7 +31,7 @@ BASS_CLEF_EXPECTED_Y = 2
 
 # 4 beats to a whole note.
 REST_DURATIONS_ = {
-    musicscore_pb2.Glyph.REST_QUARTER: 4 / 4,
+    musicscore_pb2.Glyph.REST_QUARTER: 1,
     musicscore_pb2.Glyph.REST_EIGHTH: 4 / 8,
     musicscore_pb2.Glyph.REST_SIXTEENTH: 4 / 16,
 }

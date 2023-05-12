@@ -275,20 +275,14 @@ def _filter_for_staff(staff_num, elem):
   if staff is not None:
     for subelem in new_elem:
       if subelem.tag == 'staff':
-        if subelem.text == str(staff_num + 1):
-          # Got the correct "staff" tag.
-          return new_elem
-        else:
-          # Incorrect "staff" value.
-          return None
+        return new_elem if subelem.text == str(staff_num + 1) else None
   # The "number" XML attribute can refer to the staff within <attributes>.
   if 'number' in new_elem.attrib:
-    if new_elem.attrib['number'] == str(staff_num + 1):
-      del new_elem.attrib['number']
-      return new_elem
-    else:
+    if new_elem.attrib['number'] != str(staff_num + 1):
       # Incorrect "number" attribute.
       return None
+    del new_elem.attrib['number']
+    return new_elem
   # No staff information, element should be copied to all staves.
   return copy.deepcopy(elem)
 
@@ -313,10 +307,7 @@ def measure_similarity(a, b):
   a = measure_to_note_list(a)
   b = measure_to_note_list(b)
   scale = max(len(a), len(b))
-  if scale == 0:
-    return 1
-  else:
-    return 1 - (levenshtein(a, b) / scale)
+  return 1 if scale == 0 else 1 - (levenshtein(a, b) / scale)
 
 
 def measure_to_note_list(measure):
@@ -395,7 +386,7 @@ def _note_distance(n1, n2):
     A float from 0 to 1 representing the distance between the two notes.
   """
   # If either pitch or duration is missing from either note, use exact equality.
-  if not (n1[0] and n2[0]) or not (n1[1] and n2[1]):
+  if not n1[0] or not n2[0] or not n1[1] or not n2[1]:
     return n1 != n2
 
   max_pitch_diff = 4.

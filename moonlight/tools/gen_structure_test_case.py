@@ -39,7 +39,7 @@ def main(argv):
     # TODO(ringw): Use a real templating system (e.g. jinja or mako).
     if i > 0:
       print('')
-    print('  def test%s_structure(self):' % _sanitized_basename(filename))
+    print(f'  def test{_sanitized_basename(filename)}_structure(self):')
     print('    page = engine.OMREngine().run(')
     print('        \'%s\').page[0]' % escaped_filename)
     print('    self.assertEqual(len(page.system), %d)' % len(page.system))

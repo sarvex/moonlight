@@ -51,8 +51,7 @@ def hough_lines(image, thetas):
   height = tf.cast(tf.shape(image)[0], tf.float64)
   width = tf.cast(tf.shape(image)[1], tf.float64)
   num_rho = tf.cast(tf.ceil(tf.sqrt(height * height + width * width)), tf.int32)
-  hough_bins = _bincount_2d(rho, num_rho)
-  return hough_bins
+  return _bincount_2d(rho, num_rho)
 
 
 def hough_peaks(hough_bins, thetas, minval=0, invalidate_distance=0):
@@ -131,7 +130,7 @@ def _bincount_2d(values, num_values):
   row_values = values + tf.range(num_rows)[:, None] * num_values
   # Remove entries that would collide with other rows.
   values_flat = tf.boolean_mask(row_values,
-                                (0 <= values) & (values < num_values))
+                                (values >= 0) & (values < num_values))
   bins_length = num_rows * num_values
   bins = tf.bincount(values_flat, minlength=bins_length, maxlength=bins_length)
   return tf.reshape(bins, [num_rows, num_values])

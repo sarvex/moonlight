@@ -50,10 +50,11 @@ class Measures(object):
     Returns:
       The measure index, or -1 if it lies outside of the measures.
     """
-    for i, (start_bar, end_bar) in enumerate(self.bars):
-      if start_bar.x <= glyph.x < end_bar.x:
-        return i
-    return -1
+    return next(
+        (i for i, (start_bar, end_bar) in enumerate(self.bars)
+         if start_bar.x <= glyph.x < end_bar.x),
+        -1,
+    )
 
 
 def _get_bar_intervals(staff_system):
@@ -66,5 +67,4 @@ def _get_bar_intervals(staff_system):
     # Single barline is at the beginning of the staff.
     yield staff_system.bar[0], musicscore_pb2.StaffSystem.Bar(x=MEASURE_MAX_X)
   else:
-    for start, end in zip(staff_system.bar[:-1], staff_system.bar[1:]):
-      yield start, end
+    yield from zip(staff_system.bar[:-1], staff_system.bar[1:])

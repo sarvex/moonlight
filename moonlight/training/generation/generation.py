@@ -129,8 +129,8 @@ class PageGenerationDoFn(beam.DoFn):
 
     seeds = ','.join(map(str, seeds))
     return json.loads(
-        subprocess.check_output(vexflow_generator_command +
-                                ['--random_seeds=' + seeds]))
+        subprocess.check_output(
+            (vexflow_generator_command + [f'--random_seeds={seeds}'])))
 
   def _svg_to_png(self, svg):
     svg_to_png_command = list(self.svg_to_png_command)
@@ -196,9 +196,9 @@ class PatchExampleDoFn(beam.DoFn):
           ],
           feed_dict={self.omr.image: noisy_image})
     if stafflines.shape[0] != 1:
-      raise ValueError('Image should have one detected staff, got shape: ' +
-                       str(stafflines.shape))
-    positive_example_count = 0
+      raise ValueError(
+          f'Image should have one detected staff, got shape: {str(stafflines.shape)}'
+      )
     negative_example_whitelist = np.ones(
         (stafflines.shape[staffline_extractor.Axes.POSITION],
          stafflines.shape[staffline_extractor.Axes.X]), np.bool)
@@ -209,6 +209,7 @@ class PatchExampleDoFn(beam.DoFn):
     negative_example_whitelist[:,
                                -negative_example_overlap_from_end - 1:] = False
     all_positive_examples = []
+    positive_example_count = 0
     for glyph in staff_message.glyph:
       staffline = staffline_extractor.get_staffline(glyph.y_position,
                                                     stafflines[0])
@@ -217,8 +218,7 @@ class PatchExampleDoFn(beam.DoFn):
                 self.omr.glyph_classifier.staffline_extractor.target_height /
                 (image_staffline_distance * self.omr.glyph_classifier
                  .staffline_extractor.staffline_distance_multiple)))
-      example = self._create_example(staffline, glyph_x, glyph.type)
-      if example:
+      if example := self._create_example(staffline, glyph_x, glyph.type):
         staffline_index = staffline_extractor.y_position_to_index(
             glyph.y_position,
             stafflines.shape[staffline_extractor.Axes.POSITION])

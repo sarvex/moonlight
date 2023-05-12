@@ -40,9 +40,9 @@ class StaffProcessor(object):
     for i, staff in enumerate(page.system[0].staff):
       staff.staffline_distance = self.staff_detector.staffline_distance[i]
       for j in moves.xrange(staves_arr.shape[1]):
-        if (0 < j and j + 1 < staves_arr.shape[1] and
-            staves_arr[i, j - 1, 0] == staves_arr[i, j, 0] and
-            staves_arr[i, j, 0] == staves_arr[i, j + 1, 0]):
+        if (j > 0 and j + 1 < staves_arr.shape[1]
+            and staves_arr[i, j - 1, 0] == staves_arr[i, j, 0]
+            and staves_arr[i, j, 0] == staves_arr[i, j + 1, 0]):
           continue
         point = staff.center_line.add()
         point.x = staves_arr[i, j, 0]

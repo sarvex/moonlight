@@ -177,7 +177,7 @@ class OmrRegressionTest(absltest.TestCase):
 
 def _get_imslp_path(filename):
   m = re.match(IMSLP_FILENAME, filename)
-  bucket = int(m.group(1)) // 1000
+  bucket = int(m[1]) // 1000
   return os.path.join(FLAGS.corpus_dir, str(bucket), filename)
 
 

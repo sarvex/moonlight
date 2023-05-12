@@ -117,7 +117,7 @@ def _process_cluster(cluster):
   buf = six.BytesIO()
   image.save(buf, 'PNG', optimize=True)
   buf.seek(0)
-  preview = 'data:image/png;base64,' + str(base64.b64encode(buf.read()))
+  preview = f'data:image/png;base64,{str(base64.b64encode(buf.read()))}'
   # The cluster is likely non-content (does not contain a glyph) if the
   # max standard deviation across all rows or all columns is low. Show those
   # patches at the bottom of the page so that they can still be double checked

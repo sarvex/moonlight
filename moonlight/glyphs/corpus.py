@@ -40,7 +40,7 @@ def get_patch_shape(corpus_file):
   try:
     example.ParseFromString(next(tf.python_io.tf_record_iterator(corpus_file)))
   except StopIteration as e:
-    raise ValueError('corpus_file cannot be empty: %s' % e)
+    raise ValueError(f'corpus_file cannot be empty: {e}')
   return (example.features.feature['height'].int64_list.value[0],
           example.features.feature['width'].int64_list.value[0])
 

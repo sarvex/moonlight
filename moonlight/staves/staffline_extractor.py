@@ -189,8 +189,7 @@ class StafflineExtractor(object):
     ys += tf.cast(
         tf.ceil(tf.truediv(staffline_num * staffline_distance, 2)), tf.int32)
 
-    invalid = tf.logical_not((0 <= ys) & (ys < height) & (0 <= xs)
-                             & (xs < width))
+    invalid = tf.logical_not((ys >= 0) & (ys < height) & (xs >= 0) & (xs < width))
     # Use a coordinate of (0, 0) for pixels outside of the original image.
     # We will then fill in those pixels with zeros.
     ys = tf.where(invalid, tf.zeros_like(ys), ys)

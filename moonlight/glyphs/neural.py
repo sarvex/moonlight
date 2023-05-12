@@ -140,8 +140,8 @@ class NeuralNetworkGlyphClassifier(object):
     prediction_vars = {}
 
     hidden, layer_vars = InputConvLayer(input_placeholder, 10).get()
-    autoencoder_vars.update(layer_vars)
-    prediction_vars.update(layer_vars)
+    autoencoder_vars |= layer_vars
+    prediction_vars |= layer_vars
 
     hidden, layer_vars = HiddenLayer(hidden, 10, 10).get()
     autoencoder_vars.update(layer_vars)
@@ -170,9 +170,9 @@ class NeuralNetworkGlyphClassifier(object):
 class BaseLayer(object):
 
   def __init__(self, filter_size, n_in, n_out, name):
-    self.weights = tf.Variable(
-        tf.truncated_normal((filter_size, n_in, n_out)), name=name + "_W")
-    self.bias = tf.Variable(tf.zeros(n_out), name=name + "_bias")
+    self.weights = tf.Variable(tf.truncated_normal((filter_size, n_in, n_out)),
+                               name=f"{name}_W")
+    self.bias = tf.Variable(tf.zeros(n_out), name=f"{name}_bias")
     self.vars = {self.weights.name: self.weights, self.bias.name: self.bias}
 
   def get(self):

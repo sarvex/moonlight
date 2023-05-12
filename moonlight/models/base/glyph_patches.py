@@ -258,9 +258,9 @@ def metrics_fn(features, labels, predictions):
   }
   for class_name in FLAGS.classes_for_metrics:
     class_number = musicscore_pb2.Glyph.Type.Value(class_name)
-    metrics['class/{}_precision'.format(class_name)] = multiclass_binary_metric(
+    metrics[f'class/{class_name}_precision'] = multiclass_binary_metric(
         class_number, tf.metrics.precision, labels, predictions)
-    metrics['class/{}_recall'.format(class_name)] = multiclass_binary_metric(
+    metrics[f'class/{class_name}_recall'] = multiclass_binary_metric(
         class_number, tf.metrics.recall, labels, predictions)
   return metrics
 

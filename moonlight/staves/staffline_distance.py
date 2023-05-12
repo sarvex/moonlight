@@ -233,7 +233,7 @@ def estimate_staffline_distance_and_thickness(image, threshold=127):
   image = tf.convert_to_tensor(image, name='image', dtype=tf.uint8)
   threshold = tf.convert_to_tensor(threshold, name='threshold', dtype=tf.uint8)
   if image.dtype.base_dtype != tf.uint8:
-    raise TypeError('Invalid dtype %s.' % image.dtype)
+    raise TypeError(f'Invalid dtype {image.dtype}.')
 
   columns, values, lengths = run_length.vertical_run_length_encoding(
       tf.less(image, threshold))

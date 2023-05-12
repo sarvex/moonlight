@@ -69,8 +69,9 @@ def run(input_pngs, glyphs_saved_model=None, output_notesequence=False):
 
 def main(argv):
   if FLAGS.output_type not in VALID_OUTPUT_TYPES:
-    raise ValueError('output_type "%s" not in allowed types: %s' %
-                     (FLAGS.output_type, VALID_OUTPUT_TYPES))
+    raise ValueError(
+        f'output_type "{FLAGS.output_type}" not in allowed types: {VALID_OUTPUT_TYPES}'
+    )
 
   # Exclude argv[0], which is the current binary.
   patterns = argv[1:]
@@ -78,11 +79,11 @@ def main(argv):
     raise ValueError('PNG file glob(s) must be specified')
   input_paths = []
   for pattern in patterns:
-    pattern_paths = file_io.get_matching_files(pattern)
-    if not pattern_paths:
-      raise ValueError('Pattern "%s" failed to match any files' % pattern)
-    input_paths.extend(pattern_paths)
+    if pattern_paths := file_io.get_matching_files(pattern):
+      input_paths.extend(pattern_paths)
 
+    else:
+      raise ValueError(f'Pattern "{pattern}" failed to match any files')
   start = time.time()
   output = run(
       input_paths,
@@ -93,11 +94,10 @@ def main(argv):
 
   if FLAGS.output_type == 'MusicXML':
     output_bytes = conversions.score_to_musicxml(output)
+  elif FLAGS.text_format:
+    output_bytes = text_format.MessageToString(output).encode('utf-8')
   else:
-    if FLAGS.text_format:
-      output_bytes = text_format.MessageToString(output).encode('utf-8')
-    else:
-      output_bytes = output.SerializeToString()
+    output_bytes = output.SerializeToString()
   file_io.write_string_to_file(FLAGS.output, output_bytes)
 
 

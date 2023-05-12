@@ -196,7 +196,7 @@ def _get_note_duration(note):
   elif note.type == musicscore_pb2.Glyph.NOTEHEAD_WHOLE:
     duration = 4.0
   else:
-    raise ValueError('Expected a notehead, got: %s' % note)
+    raise ValueError(f'Expected a notehead, got: {note}')
   # The first dot adds half the original duration, and further dots add half the
   # value added by the previous dot.
   dot_value = duration / 2.

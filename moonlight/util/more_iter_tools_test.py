@@ -34,7 +34,8 @@ class MoreIterToolsTest(absltest.TestCase):
     for bin_count in bins:
       self.assertTrue(
           np.allclose(bin_count, expected_bin_count, rtol=0.1),
-          '{} within 10% of {}'.format(bin_count, expected_bin_count))
+          f'{bin_count} within 10% of {expected_bin_count}',
+      )
 
 
 if __name__ == '__main__':

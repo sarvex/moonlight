@@ -81,7 +81,7 @@ class StafflinePatchesDoFn(beam.DoFn):
       return
     patches_iter = filter(_filter_patch, patches_iter)
 
-    if 0 < self.max_patches_per_page:
+    if self.max_patches_per_page > 0:
       # Subsample patches.
       patches = more_iter_tools.iter_sample(patches_iter,
                                             self.max_patches_per_page)

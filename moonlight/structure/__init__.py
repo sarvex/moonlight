@@ -64,14 +64,14 @@ def create_structure(image,
     verticals = verticals(staff_detector)
   with tf.name_scope('components'):
     components = components(staff_remover)
-  structure = Structure(
+  return Structure(
       staff_detector,
       beams,
       verticals,
       components,
       image=image,
-      staff_remover=staff_remover)
-  return structure
+      staff_remover=staff_remover,
+  )
 
 
 class Structure(object):
@@ -130,10 +130,7 @@ class Structure(object):
 
     if not session:
       session = tf.get_default_session()
-    if image is not None:
-      feed_dict = {self.staff_detector.image: image}
-    else:
-      feed_dict = {}
+    feed_dict = {self.staff_detector.image: image} if image is not None else {}
     staff_detector_data, beams_data, verticals_data, components_data = (
         session.run(
             [staff_detector_data, beams_data, verticals_data, components_data],

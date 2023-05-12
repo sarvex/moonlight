@@ -73,11 +73,10 @@ class CenteredRests(object):
     """Rests should be centered on the staff, assuming a single voice."""
     for system in page.system:
       for staff in system.staff:
-        to_remove = []
-        for glyph in staff.glyph:
-          if glyph_types.is_rest(glyph) and abs(glyph.y_position) > 2:
-            to_remove.append(glyph)
-
+        to_remove = [
+            glyph for glyph in staff.glyph
+            if glyph_types.is_rest(glyph) and abs(glyph.y_position) > 2
+        ]
         for glyph in to_remove:
           staff.glyph.remove(glyph)
 

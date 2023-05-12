@@ -170,9 +170,8 @@ class KeySignature(_BaseAccidentals):
 
 
 def _key_sig_pitch_classes(note_name, ascending_fifths):
-  first_pitch_class = (
-      librosa.note_to_midi(note_name + '0') %
-      constants.NUM_SEMITONES_PER_OCTAVE)
+  first_pitch_class = (librosa.note_to_midi(f'{note_name}0') %
+                       constants.NUM_SEMITONES_PER_OCTAVE)
   # Go through the circle of fifths in ascending or descending order.
   step = 1 if ascending_fifths else -1
   order = constants.CIRCLE_OF_FIFTHS[::step]

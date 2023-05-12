@@ -103,11 +103,7 @@ def _extract_dots(structure):
       is_full
       & _is_in_range(min_height_width, width, max_height_width)
       & _is_in_range(min_height_width, height, max_height_width)]
-  # pyformat would make this completely unreadable
-  # pyformat: disable
-  candidate_centers = (
-      np.c_[
-          (candidates[:, COMPONENTS.X0] + candidates[:, COMPONENTS.X1]) / 2,
-          (candidates[:, COMPONENTS.Y0] + candidates[:, COMPONENTS.Y1]) / 2]
-      .astype(int))
-  return candidate_centers
+  return np.c_[(candidates[:, COMPONENTS.X0] + candidates[:, COMPONENTS.X1]) /
+               2,
+               (candidates[:, COMPONENTS.Y0] + candidates[:, COMPONENTS.Y1]) /
+               2, ].astype(int)

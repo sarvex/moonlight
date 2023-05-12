@@ -55,11 +55,10 @@ def true_segments_1d(segments,
     # Take only the True runs. After whichever run is True first, the True runs
     # are every other run.
     first_run = tf.cond(
-        # First value is False, or all values are False. Handles empty segments
-        # correctly.
-        tf.logical_or(tf.reduce_any(segments[0:1]), ~tf.reduce_any(segments)),
+        tf.logical_or(tf.reduce_any(segments[:1]), ~tf.reduce_any(segments)),
         lambda: tf.constant(0),
-        lambda: tf.constant(1))
+        lambda: tf.constant(1),
+    )
 
     num_runs = tf.shape(run_starts)[0]
     run_nums = tf.range(num_runs)
@@ -160,7 +159,7 @@ def _segments_1d(values, mode, name=None):
             tf.cast(tf.range(length), tf.float32), segment_ids)
         run_centers = tf.cast(tf.floor(run_centers), tf.int32)
       else:
-        raise ValueError("Unexpected mode: %s" % mode)
+        raise ValueError(f"Unexpected mode: {mode}")
       run_lengths = tf.segment_sum(tf.ones([length], tf.int32), segment_ids)
       return run_centers, run_lengths
 

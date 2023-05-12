@@ -110,12 +110,14 @@ class FilteredHoughStaffDetector(base.BaseStaffDetector):
           self.estimated_staffline_thickness, self.max_abs_theta,
           self.num_theta).staves
       staves = tf.concat([staves, current_staves], axis=0)
-      staffline_distances = tf.concat([
-          staffline_distances,
-          tf.tile([current_staffline_distance],
-                  tf.shape(staves)[0:1]),
-      ],
-                                      axis=0)
+      staffline_distances = tf.concat(
+          [
+              staffline_distances,
+              tf.tile([current_staffline_distance],
+                      tf.shape(staves)[:1]),
+          ],
+          axis=0,
+      )
       return i + 1, staves, staffline_distances
 
     num_staffline_distances = tf.shape(self.estimated_staffline_distance)[0]
@@ -205,8 +207,9 @@ class _SingleSizeFilteredHoughStaffDetector(object):
                  tf.sin(staff_thetas), tf.int32)
     # Cut out staves which have a start or end y outside of the image.
     is_valid = tf.logical_and(
-        tf.logical_and(0 <= y0, y0 < height),
-        tf.logical_and(0 <= y1, y1 < height))
+        tf.logical_and(y0 >= 0, y0 < height),
+        tf.logical_and(y1 >= 0, y1 < height),
+    )
     staves = tf.reshape(tf.stack([x0, y0, x1, y1], axis=1), [-1, 2, 2])
     return tf.boolean_mask(staves, is_valid)
 

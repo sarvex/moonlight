@@ -85,13 +85,12 @@ class Convolutional1DGlyphClassifier(base.BaseGlyphClassifier):
           if x < width:
             value = predictions_arr[staff, staffline, x]
           if x == width or value != run_value:
-            if run_value > musicscore_pb2.Glyph.NONE:
-              # Process the current run if it is at least run_min_length pixels.
-              if x - run_start >= self.run_min_length:
-                glyph_center_x = (run_start + x) // 2
-                glyphs.append(
-                    self._create_glyph_arr(staff, y_position, glyph_center_x,
-                                           run_value))
+            if (run_value > musicscore_pb2.Glyph.NONE
+                and x - run_start >= self.run_min_length):
+              glyph_center_x = (run_start + x) // 2
+              glyphs.append(
+                  self._create_glyph_arr(staff, y_position, glyph_center_x,
+                                         run_value))
             run_value = value
             run_start = x
     # Convert to a 2D array.

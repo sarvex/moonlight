@@ -39,5 +39,5 @@ def glyph_y(staff, glyph):
                                     (point_b.x - point_a.x))
       # y positions count up (in the negative y direction).
       return staff_center_y - staff.staffline_distance * glyph.y_position // 2
-  raise ValueError('Glyph (%s) is not contained by staff (%s)' %
-                   (glyph, staff.center_line))
+  raise ValueError(
+      f'Glyph ({glyph}) is not contained by staff ({staff.center_line})')
